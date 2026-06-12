@@ -1,0 +1,1800 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI电商Listing图片生成器 - 一键制作亚马逊/淘宝/TikTok/独立站全套主图与详情页</title>
+<meta name="description" content="专为跨境与国内电商卖家打造的AI做图神器。只需上传商品图并输入卖点，即可智能生成主图、场景图、尺寸图、对比图等全套Listing素材。">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --primary:#6C5CE7;--primary-dark:#4834D4;--primary-light:#F0EDFF;
+  --accent:#FF6B35;--accent2:#00D2FF;
+  --bg:#F7F8FC;--card:#FFFFFF;--text:#1a1a2e;--text2:#555;--text3:#999;
+  --border:#e8e8f0;--shadow:0 4px 24px rgba(108,92,231,0.08);--radius:16px;
+  --green:#27ae60;--red:#e74c3c;--orange:#f39c12;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
+
+/* ===== Header ===== */
+.header{background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);padding:0 48px;height:68px;display:flex;align-items:center;justify-content:space-between;position:fixed;top:0;left:0;right:0;z-index:1000;box-shadow:0 2px 20px rgba(0,0,0,0.06);transition:box-shadow .3s}
+.header.scrolled{box-shadow:0 4px 30px rgba(0,0,0,0.1)}
+.logo-area{display:flex;align-items:center;gap:12px}
+.logo-icon{width:38px;height:38px;background:linear-gradient(135deg,var(--primary),var(--accent2));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff}
+.logo-text{font-size:18px;font-weight:800;color:var(--text)}
+.logo-text span{color:var(--primary)}
+.nav{display:flex;gap:32px;align-items:center}
+.nav a{text-decoration:none;color:var(--text2);font-size:14px;font-weight:600;transition:color .2s;position:relative}
+.nav a:hover{color:var(--primary)}
+.nav a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;background:var(--primary);transition:width .2s}
+.nav a:hover::after{width:100%}
+.header-btn{padding:9px 22px;border-radius:24px;font-size:13.5px;font-weight:700;cursor:pointer;border:none;transition:all .25s}
+.btn-login{background:transparent;color:var(--text2);border:1.5px solid var(--border)}
+.btn-login:hover{color:var(--primary);border-color:var(--primary)}
+.btn-start{background:linear-gradient(135deg,var(--primary),#A29BFE);color:#fff;margin-left:8px;box-shadow:0 4px 16px rgba(108,92,231,0.3)}
+.btn-start:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(108,92,231,0.45)}
+
+/* ===== Hero ===== */
+.hero{background:linear-gradient(160deg,#0F0B2E 0%,#1a1040 30%,#2D1B69 60%,#6C5CE7 100%);min-height:100vh;display:flex;align-items:center;padding:120px 48px 80px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;right:-20%;width:800px;height:800px;background:radial-gradient(circle,rgba(108,92,231,0.2),transparent 70%);border-radius:50%}
+.hero::after{content:'';position:absolute;bottom:-30%;left:-10%;width:600px;height:600px;background:radial-gradient(circle,rgba(0,210,255,0.12),transparent 70%);border-radius:50%}
+.hero-content{max-width:600px;position:relative;z-index:2}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.1);backdrop-filter:blur(10px);padding:8px 18px;border-radius:24px;font-size:13px;color:rgba(255,255,255,0.9);margin-bottom:24px;border:1px solid rgba(255,255,255,0.12)}
+.hero-badge .badge-dot{width:8px;height:8px;border-radius:50%;background:var(--accent2);animation:pulse 2s infinite}
+.hero h1{font-size:52px;font-weight:900;color:#fff;line-height:1.15;margin-bottom:20px;letter-spacing:-1px}
+.hero h1 .highlight{background:linear-gradient(90deg,var(--accent2),#A29BFE);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{font-size:17px;color:rgba(255,255,255,0.7);line-height:1.7;margin-bottom:36px;max-width:500px}
+.hero-btns{display:flex;gap:16px;flex-wrap:wrap}
+.btn-primary-lg{padding:16px 36px;border-radius:14px;font-size:16px;font-weight:800;cursor:pointer;border:none;background:linear-gradient(135deg,var(--accent2),var(--primary));color:#fff;box-shadow:0 8px 32px rgba(108,92,231,0.4);transition:all .3s}
+.btn-primary-lg:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(108,92,231,0.55)}
+.btn-secondary-lg{padding:16px 36px;border-radius:14px;font-size:16px;font-weight:700;cursor:pointer;border:2px solid rgba(255,255,255,0.25);background:transparent;color:#fff;transition:all .25s}
+.btn-secondary-lg:hover{background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.5)}
+
+/* Hero Visual */
+.hero-visual{position:absolute;right:48px;top:50%;transform:translateY(-50%);width:52%;max-width:680px;z-index:2}
+.hero-mockup{background:rgba(255,255,255,0.06);backdrop-filter:blur(20px);border-radius:20px;padding:20px;border:1px solid rgba(255,255,255,0.1);box-shadow:0 20px 60px rgba(0,0,0,0.3)}
+.mockup-header{display:flex;align-items:center;gap:8px;margin-bottom:16px}
+.mockup-dot{width:10px;height:10px;border-radius:50%}
+.mockup-dots{display:flex;gap:6px}
+.mockup-bar{flex:1;height:32px;background:rgba(255,255,255,0.06);border-radius:8px;display:flex;align-items:center;padding:0 12px;font-size:11px;color:rgba(255,255,255,0.4);margin-left:12px}
+.mockup-content{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.mockup-card{background:rgba(255,255,255,0.04);border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,0.06)}
+.mockup-card-img{width:100%;aspect-ratio:1/1;background:linear-gradient(135deg,rgba(108,92,231,0.3),rgba(0,210,255,0.2));display:flex;align-items:center;justify-content:center;font-size:32px}
+.mockup-card-label{ padding:8px 10px;font-size:10px;color:rgba(255,255,255,0.5);border-top:1px solid rgba(255,255,255,0.06)}
+
+/* ===== Section Common ===== */
+.section{padding:80px 48px;max-width:1200px;margin:0 auto}
+.section-header{text-align:center;margin-bottom:56px}
+.section-tag{display:inline-block;padding:6px 16px;border-radius:20px;font-size:12px;font-weight:700;margin-bottom:12px;letter-spacing:1px;text-transform:uppercase}
+.tag-purple{background:var(--primary-light);color:var(--primary)}
+.tag-orange{background:#FFF3ED;color:var(--accent)}
+.section-title{font-size:36px;font-weight:800;color:var(--text);line-height:1.2;margin-bottom:14px}
+.section-desc{font-size:15.5px;color:var(--text3);max-width:560px;margin:0 auto;line-height:1.6}
+
+/* ===== Features ===== */
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.feature-card{background:var(--card);border-radius:var(--radius);padding:32px 28px;box-shadow:var(--shadow);border:1.5px solid var(--border);transition:all .3s;position:relative;overflow:hidden}
+.feature-card:hover{transform:translateY(-6px);box-shadow:0 12px 40px rgba(108,92,231,0.13)}
+.feature-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;border-radius:var(--radius) var(--radius) 0 0}
+.feature-card:nth-child(1)::before{background:linear-gradient(90deg,#6C5CE7,#A29BFE)}
+.feature-card:nth-child(2)::before{background:linear-gradient(90deg,#FF6B35,#FFB347)}
+.feature-card:nth-child(3)::before{background:linear-gradient(90deg,#00D2FF,#7B68EE)}
+.feature-card:nth-child(4)::before{background:linear-gradient(90deg,#27ae60,#2ecc71)}
+.feature-card:nth-child(5)::before{background:linear-gradient(90deg,#f39c12,#f1c40f)}
+.feature-card:nth-child(6)::before{background:linear-gradient(90deg,#e74c3c,#e67e22)}
+.feature-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:18px}
+.feature-card:nth-child(1) .feature-icon{background:var(--primary-light)}
+.feature-card:nth-child(2) .feature-icon{background:#FFF3ED}
+.feature-card:nth-child(3) .feature-icon{background:#E8F8FF}
+.feature-card:nth-child(4) .feature-icon{background:#E8F8F0}
+.feature-card:nth-child(5) .feature-icon{background:#FFF9E6}
+.feature-card:nth-child(6) .feature-icon{background:#FFE8E8}
+.feature-card h3{font-size:17px;font-weight:700;margin-bottom:10px;color:var(--text)}
+.feature-card p{font-size:13.5px;color:var(--text3);line-height:1.65}
+
+/* ===== Platforms ===== */
+.platforms{background:var(--card);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.platforms-grid{display:flex;justify-content:center;gap:48px;flex-wrap:wrap;align-items:center}
+.platform-item{display:flex;flex-direction:column;align-items:center;gap:10px;opacity:0.55;transition:opacity .3s;cursor:default}
+.platform-item:hover{opacity:1}
+.platform-icon{width:64px;height:64px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:28px;background:var(--bg);border:1.5px solid var(--border)}
+.platform-item span{font-size:13px;font-weight:600;color:var(--text2)}
+
+/* ===== How it Works ===== */
+.steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:36px;position:relative}
+.steps-grid::before{content:'';position:absolute;top:60px;left:15%;right:15%;height:3px;background:linear-gradient(90deg,var(--primary-light),var(--primary),var(--primary-light));z-index:0}
+.step-card{text-align:center;position:relative;z-index:1}
+.step-num{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--primary),#A29BFE);color:#fff;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:900;margin:0 auto 20px;box-shadow:0 8px 28px rgba(108,92,231,0.3)}
+.step-card h3{font-size:18px;font-weight:700;margin-bottom:10px}
+.step-card p{font-size:13.5px;color:var(--text3);line-height:1.6;max-width:280px;margin:0 auto}
+
+/* ===== Tool Workspace ===== */
+.workspace{background:linear-gradient(160deg,#0F0B2E,#1a1040);padding:80px 48px;color:#fff}
+.workspace .section-title{color:#fff}.workspace .section-desc{color:rgba(255,255,255,0.6)}
+.tool-container{max-width:1100px;margin:40px auto 0;background:rgba(255,255,255,0.06);backdrop-filter:blur(20px);border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,0.1);display:grid;grid-template-columns:340px 1fr;min-height:520px}
+.tool-left{background:rgba(0,0,0,0.2);padding:24px;border-right:1px solid rgba(255,255,255,0.08)}
+.tool-right{padding:24px;display:flex;flex-direction:column}
+.upload-area{border:2px dashed rgba(255,255,255,0.15);border-radius:14px;padding:28px 16px;text-align:center;cursor:pointer;transition:all .3s;margin-bottom:16px}
+.upload-area:hover{border-color:var(--accent2);background:rgba(0,210,255,0.05)}
+.upload-area .upload-icon{font-size:36px;margin-bottom:8px;opacity:0.6}
+.upload-area p{font-size:13px;color:rgba(255,255,255,0.5)}
+.tool-input{width:100%;padding:10px 14px;border:1.5px solid rgba(255,255,255,0.12);border-radius:10px;background:rgba(255,255,255,0.05);color:#fff;font-size:13.5px;outline:none;margin-bottom:12px;font-family:inherit}
+.tool-input:focus{border-color:var(--accent2)}
+.tool-input::placeholder{color:rgba(255,255,255,0.3)}
+.type-tags{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:16px}
+.type-tag{padding:7px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.6);transition:all .2s;background:transparent}
+.type-tag:hover{border-color:rgba(255,255,255,0.3);color:#fff}
+.type-tag.selected{border-color:var(--accent2);background:rgba(0,210,255,0.12);color:var(--accent2)}
+.model-tags{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:16px}
+.model-tag{padding:7px 14px;border-radius:20px;font-size:11.5px;font-weight:600;cursor:pointer;border:1.5px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.6);transition:all .2s;background:transparent}
+.model-tag:hover{border-color:rgba(255,255,255,0.3);color:#fff}
+.model-tag.selected{border-color:#A29BFE;background:rgba(108,92,231,0.15);color:#A29BFE}
+.tool-gen-btn{width:100%;padding:14px;border:none;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer;background:linear-gradient(135deg,var(--accent2),var(--primary));color:#fff;transition:all .25s;margin-top:auto}
+.tool-gen-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(108,92,231,0.4)}
+.result-area{flex:1;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.3);font-size:14px}
+.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%}
+.result-thumb{aspect-ratio:1/1;background:rgba(255,255,255,0.04);border-radius:12px;border:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;font-size:28px;color:rgba(255,255,255,0.15);overflow:hidden}
+.result-thumb.has-img{color:#fff;border-color:rgba(108,92,231,0.3)}
+.result-thumb img{width:100%;height:100%;object-fit:cover}
+.cell-loading{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;width:100%}
+.spinner{width:32px;height:32px;border:3px solid rgba(255,255,255,0.1);border-top-color:#00D2FF;border-radius:50%;animation:spin 0.8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.cell-error{padding:20px}
+
+/* ===== Pricing ===== */
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;max-width:960px;margin:0 auto}
+.price-card{background:var(--card);border-radius:var(--radius);padding:36px 30px;box-shadow:var(--shadow);border:1.5px solid var(--border);text-align:center;position:relative;transition:all .3s}
+.price-card:hover{transform:translateY(-4px)}
+.price-card.featured{border-color:var(--primary);box-shadow:0 8px 40px rgba(108,92,231,0.15)}
+.price-card.featured::before{content:'最受欢迎';position:absolute;top:0;left:50%;transform:translate(-50%,-50%);background:linear-gradient(135deg,var(--primary),#A29BFE);color:#fff;padding:5px 18px;border-radius:20px;font-size:11.5px;font-weight:700}
+.price-name{font-size:15px;color:var(--text3);margin-bottom:8px;font-weight:600}
+.price-amount{font-size:48px;font-weight:900;color:var(--text);margin-bottom:4px}
+.price-amount .yen{font-size:20px;vertical-align:super;margin-right:2px}
+.price-period{font-size:13px;color:var(--text3);margin-bottom:20px}
+.price-features{list-style:none;margin-bottom:28px;text-align:left}
+.price-features li{padding:8px 0;font-size:13.5px;color:var(--text2);display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--bg)}
+.price-features li:last-child{border-bottom:none}
+.price-features li::before{content:'✅';font-size:12px;flex-shrink:0}
+.price-btn{width:100%;padding:13px;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;border:none;transition:all .25s}
+.price-btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--text2)}
+.price-btn-outline:hover{border-color:var(--primary);color:var(--primary)}
+.price-btn-primary{background:linear-gradient(135deg,var(--primary),#A29BFE);color:#fff;box-shadow:0 4px 20px rgba(108,92,231,0.3)}
+.price-btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(108,92,231,0.45)}
+
+/* ===== FAQ ===== */
+.faq-list{max-width:780px;margin:0 auto}
+.faq-item{background:var(--card);border-radius:14px;margin-bottom:12px;box-shadow:0 2px 12px rgba(0,0,0,0.04);border:1.5px solid var(--border);overflow:hidden}
+.faq-q{width:100%;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;background:none;border:none;font-size:15px;font-weight:700;color:var(--text);text-align:left;font-family:inherit;transition:background .2s}
+.faq-q:hover{background:var(--bg)}
+.faq-q .arrow{font-size:18px;transition:transform .3s;color:var(--text3)}
+.faq-item.open .faq-q .arrow{transform:rotate(180deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .35s ease,padding .35s ease;padding:0 24px}
+.faq-item.open .faq-a{max-height:300px;padding:0 24px 20px}
+.faq-a p{font-size:13.5px;color:var(--text3);line-height:1.7}
+
+/* ===== CTA ===== */
+.cta{background:linear-gradient(135deg,var(--primary-dark),var(--primary),#A29BFE);padding:80px 48px;text-align:center;color:#fff}
+.cta h2{font-size:36px;font-weight:800;margin-bottom:14px}
+.cta p{font-size:16px;opacity:0.75;margin-bottom:36px;max-width:500px;margin-left:auto;margin-right:auto;line-height:1.6}
+.cta-btn{padding:16px 44px;border-radius:14px;font-size:16px;font-weight:800;cursor:pointer;border:none;background:#fff;color:var(--primary);box-shadow:0 8px 32px rgba(0,0,0,0.2);transition:all .25s}
+.cta-btn:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,0.3)}
+
+/* ===== Footer ===== */
+.footer{background:#0F0B2E;color:rgba(255,255,255,0.5);padding:60px 48px 30px;font-size:13px}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;max-width:1200px;margin:0 auto 40px}
+.footer-brand p{margin-top:12px;line-height:1.6;font-size:12.5px}
+.footer-col h4{color:#fff;font-size:14px;font-weight:700;margin-bottom:16px}
+.footer-col a{display:block;color:rgba(255,255,255,0.45);text-decoration:none;margin-bottom:10px;font-size:12.5px;transition:color .2s}
+.footer-col a:hover{color:var(--accent2)}
+.footer-bottom{text-align:center;padding-top:24px;border-top:1px solid rgba(255,255,255,0.08);font-size:12px;color:rgba(255,255,255,0.3)}
+
+/* ===== Responsive ===== */
+@media(max-width:960px){
+  .hero{flex-direction:column;padding:120px 24px 60px;text-align:center}
+  .hero-visual{position:relative;right:auto;top:auto;transform:none;width:100%;margin-top:40px}
+  .hero h1{font-size:34px}
+  .hero p{margin:0 auto 28px}
+  .hero-btns{justify-content:center}
+  .features-grid{grid-template-columns:1fr 1fr}
+  .steps-grid{grid-template-columns:1fr;gap:28px}
+  .pricing-grid{grid-template-columns:1fr;max-width:400px;margin:0 auto}
+  .tool-container{grid-template-columns:1fr}
+  .section,.cta,.footer,.header{padding-left:20px;padding-right:20px}
+  .nav{display:none}
+}
+@media(max-width:600px){
+  .features-grid{grid-template-columns:1fr}
+  .hero h1{font-size:28px}
+}
+
+/* ===== Animations ===== */
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.fade-in{opacity:0;transform:translateY(24px);transition:opacity .6s,transform .6s}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header" id="header">
+  <div class="logo-area">
+    <div class="logo-icon">🎨</div>
+    <div class="logo-text">AI<span>DesignKit</span></div>
+  </div>
+  <nav class="nav">
+    <a href="#features">核心功能</a>
+    <a href="#platforms">支持平台</a>
+    <a href="#how">使用流程</a>
+    <a href="#pricing">价格方案</a>
+    <a href="#faq">常见问题</a>
+  </nav>
+  <div>
+    <button class="header-btn btn-login">登录</button>
+    <button class="header-btn btn-start" onclick="scrollToTool()">免费开始</button>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="hero" id="hero">
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      AI 驱动 · 免费使用 · 无需设计经验
+    </div>
+    <h1>一键生成<span class="highlight">电商全套Listing</span>素材</h1>
+    <p>专为跨境与国内电商卖家打造的AI做图神器。上传商品图 + 输入卖点，智能生成主图、场景图、尺寸图、对比图等全套Listing素材。</p>
+    <div class="hero-btns">
+      <button class="btn-primary-lg" onclick="scrollToTool()">🚀 免费开始使用</button>
+      <button class="btn-secondary-lg">📺 观看演示</button>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-mockup">
+      <div class="mockup-header">
+        <div class="mockup-dots">
+          <div class="mockup-dot" style="background:#FF6B6B"></div>
+          <div class="mockup-dot" style="background:#FFD93D"></div>
+          <div class="mockup-dot" style="background:#6BCB77"></div>
+        </div>
+        <div class="mockup-bar">AI 正在生成中...</div>
+      </div>
+      <div class="mockup-content">
+        <div class="mockup-card">
+          <div class="mockup-card-img">👗</div>
+          <div class="mockup-card-label">白底主图</div>
+        </div>
+        <div class="mockup-card">
+          <div class="mockup-card-img" style="background:linear-gradient(135deg,rgba(255,107,53,0.3),rgba(255,179,71,0.2%)">🏞️</div>
+          <div class="mockup-card-label">场景图</div>
+        </div>
+        <div class="mockup-card">
+          <div class="mockup-card-img" style="background:linear-gradient(135deg,rgba(39,174,96,0.3),rgba(46,204,113,0.2%)">📊</div>
+          <div class="mockup-card-label">卖点图</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features -->
+<section class="section" id="features">
+  <div class="section-header fade-in">
+    <div class="section-tag tag-purple">CORE FEATURES</div>
+    <h2 class="section-title">六大核心功能</h2>
+    <p class="section-desc">覆盖电商图片全场景，一站式解决所有素材需求</p>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card fade-in">
+      <div class="feature-icon">🏳️</div>
+      <h3>AI 白底主图</h3>
+      <p>智能去除背景，生成符合 Amazon/淘宝规范的专业白底主图，支持多姿态展示</p>
+    </div>
+    <div class="feature-card fade-in">
+      <div class="feature-icon">🏞️</div>
+      <h3>场景图生成</h3>
+      <p>自动匹配最适合产品的使用场景，家居/户外/街拍多种风格一键生成</p>
+    </div>
+    <div class="feature-card fade-in">
+      <div class="feature-icon">👗</div>
+      <h3>AI 模特展示</h3>
+      <p>无需实拍，AI 生成各肤色/体型模特上身效果，支持自定义姿势与场景</p>
+    </div>
+    <div class="feature-card fade-in">
+      <div class="feature-icon">📊</div>
+      <h3>卖点信息图</h3>
+      <p>智能提炼产品卖点，自动排版生成专业信息图表，支持中英日韩多语言</p>
+    </div>
+    <div class="feature-card fade-in">
+      <div class="feature-icon">📐</div>
+      <h3>尺寸对照图</h3>
+      <p>自动生成标准尺寸表，适配各国尺码规范，支持自定义测量单位</p>
+    </div>
+    <div class="feature-card fade-in">
+      <div class="feature-icon">📄</div>
+      <h3>详情页套图</h3>
+      <p>一键生成完整A+页面/详情页套图，自动匹配品牌色调与风格</p>
+    </div>
+  </div>
+</section>
+
+<!-- Platforms -->
+<section class="section platforms" id="platforms">
+  <div class="section-header fade-in">
+    <div class="section-tag tag-orange">SUPPORTED PLATFORMS</div>
+    <h2 class="section-title">完美适配主流电商平台</h2>
+    <p class="section-desc">智能识别各平台图片规范，一键输出合规素材</p>
+  </div>
+  <div class="platforms-grid">
+    <div class="platform-item fade-in">
+      <div class="platform-icon">📦</div>
+      <span>Amazon 亚马逊</span>
+    </div>
+    <div class="platform-item fade-in">
+      <div class="platform-icon">🛒</div>
+      <span>淘宝/天猫</span>
+    </div>
+    <div class="platform-item fade-in">
+      <div class="platform-icon">🎵</div>
+      <span>TikTok Shop</span>
+    </div>
+    <div class="platform-item fade-in">
+      <div class="platform-icon">🛍️</div>
+      <span>Shopify 独立站</span>
+    </div>
+    <div class="platform-item fade-in">
+      <div class="platform-icon">📕</div>
+      <span>京东/拼多多</span>
+    </div>
+    <div class="platform-item fade-in">
+      <div class="platform-icon">📱</div>
+      <span>小红书/抖音</span>
+    </div>
+  </div>
+</section>
+
+<!-- How it Works -->
+<section class="section" id="how">
+  <div class="section-header fade-in">
+    <div class="section-tag tag-purple">HOW IT WORKS</div>
+    <h2 class="section-title">3 步完成全套素材</h2>
+    <p class="section-desc">无需设计经验，3分钟即可获得专业级电商图片</p>
+  </div>
+  <div class="steps-grid">
+    <div class="step-card fade-in">
+      <div class="step-num">1</div>
+      <h3>上传商品图</h3>
+      <p>上传一张清晰的产品照片，支持 JPG/PNG/WEBP 格式，AI 自动识别商品主体</p>
+    </div>
+    <div class="step-card fade-in">
+      <div class="step-num">2</div>
+      <h3>输入卖点信息</h3>
+      <p>填写产品名称、核心卖点、目标风格，支持自然语言描述，AI 智能理解需求</p>
+    </div>
+    <div class="step-card fade-in">
+      <div class="step-num">3</div>
+      <h3>一键生成下载</h3>
+      <p>选择需要的图片类型，AI 批量生成全套素材，支持一键下载或手动微调</p>
+    </div>
+  </div>
+</section>
+
+<!-- Workspace / Tool -->
+<section class="workspace" id="tool">
+  <div class="section-header fade-in">
+    <div class="section-tag tag-purple">TRY IT NOW</div>
+    <h2 class="section-title">立即体验 AI 出图</h2>
+    <p class="section-desc">上传商品图，填写信息，AI 即刻为您生成专业电商图片</p>
+  </div>
+  <div class="tool-container fade-in" id="toolContainer">
+    <div class="tool-left">
+      <div class="upload-area" id="wsUploadZone">
+        <div class="upload-icon">📸</div>
+        <p>点击或拖拽上传商品图</p>
+        <p style="font-size:11px;margin-top:4px;opacity:0.5">支持 JPG / PNG / WEBP</p>
+        <input type="file" id="wsFileInput" accept="image/*" style="display:none">
+      </div>
+
+      <!-- Reference Image Upload -->
+      <div style="font-size:12px;color:rgba(255,255,255,0.5);margin:12px 0 8px;font-weight:600">🖼️ 参考图上传（可选，帮助AI生成更精准）</div>
+      <div class="upload-area" id="refUploadZone" style="padding:14px 16px">
+        <div class="upload-icon" style="font-size:24px;margin-bottom:6px">🖼️</div>
+        <p style="font-size:12px">点击或拖拽上传参考图</p>
+        <input type="file" id="refFileInput" accept="image/*" style="display:none">
+      </div>
+      <div id="refPreview" style="display:none;margin-bottom:12px;text-align:center">
+        <img id="refPreviewImg" style="width:100%;max-height:180px;object-fit:contain;border-radius:8px;border:1px solid rgba(255,255,255,0.1)">
+        <div style="margin-top:6px;display:flex;gap:8px;justify-content:center">
+          <button onclick="removeRefImage()" style="font-size:11px;background:none;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.6);padding:4px 12px;border-radius:6px;cursor:pointer">🗑️ 移除参考图</button>
+        </div>
+      </div>
+      <input class="tool-input" id="refDescription" placeholder="描述参考图（例：黑色宽松短袖+黑色短裤，侧边有白色条纹）" style="margin-bottom:12px;font-size:12px">
+
+      <input class="tool-input" id="wsName" placeholder="产品名称（必填）">
+      <input class="tool-input" id="wsSelling" placeholder="核心卖点（用逗号分隔）">
+      <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;font-weight:600">生成类型（可多选）</div>
+      <div class="type-tags" id="wsTypes">
+        <span class="type-tag selected" data-type="whitebg">白底主图</span>
+        <span class="type-tag" data-type="model">模特展示</span>
+        <span class="type-tag" data-type="scene">场景图</span>
+        <span class="type-tag" data-type="infographic">卖点图</span>
+        <span class="type-tag" data-type="sizechart">尺寸图</span>
+        <span class="type-tag" data-type="detail">详情页</span>
+        <span class="type-tag" data-type="collocation">搭配对比图</span>
+      </div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;font-weight:600">AI 引擎（选择出图方式）</div>
+      <div class="model-tags" id="engineSelector" style="margin-bottom:16px">
+        <span class="model-tag selected" data-engine="multi" onclick="selectEngine(this)">Agnes AI（推荐，无限免费）</span>
+        <span class="model-tag" data-engine="siliconflow" onclick="selectEngine(this)">SiliconFlow（备选）</span>
+        <span class="model-tag" data-engine="puter" onclick="selectEngine(this)">Puter.js（备用）</span>
+        <span class="model-tag" data-engine="agent" onclick="selectEngine(this)">AI Agent（手动）</span>
+      </div>
+
+      <!-- Agnes AI Engine Options (Primary) -->
+      <div id="agnesOpts">
+        <div style="font-size:11px;color:rgba(39,174,96,0.9);margin-bottom:8px;padding:8px 10px;background:rgba(39,174,96,0.08);border-radius:8px;border:1px solid rgba(39,174,96,0.15)">
+          Agnes AI — 2026.6 新出无限期免费全模态 API<br>
+          <span style="opacity:0.7">✅ 无限免费 ✅ OpenAI兼容 ✅ 5-8s/张 ✅ 支持中文Prompt ✅ 图生图</span><br>
+          <a href="https://apihub.agnes-ai.com" target="_blank" style="font-size:11px;color:rgba(39,174,96,0.8);text-decoration:none">apihub.agnes-ai.com</a>
+        </div>
+        <div id="agnesKeyArea" style="margin-bottom:10px">
+          <label style="font-size:11px;color:rgba(255,255,255,0.5);display:block;margin-bottom:4px">API Key</label>
+          <input type="password" id="agnesApiKeyInput" placeholder="sk-..."
+            style="width:100%;padding:8px 12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);border-radius:8px;
+                   color:#fff;font-size:13px;box-sizing:border-box;outline:none;transition:border-color 0.2s"
+                 onfocus="this.style.borderColor='rgba(39,174,96,0.6)'" onblur="this.style.borderColor='rgba(255,255,255,0.15)'">
+          <div style="display:flex;align-items:center;gap:8px;margin-top:6px">
+            <button onclick="saveAgnesConfig()" style="font-size:11px;padding:4px 14px;background:rgba(39,174,96,0.2);color:#27ae60;border:1px solid rgba(39,174,96,0.4);border-radius:6px;cursor:pointer">保存 Key</button>
+            <span id="agnesKeyStatus" style="font-size:11px;color:rgba(243,156,18,0.8)"></span>
+          </div>
+        </div>
+        <div style="font-size:11px;display:flex;gap:12px;flex-wrap:wrap">
+          <span style="color:rgba(255,255,255,0.35)">模型:</span>
+          <select id="agnesModelSelect" onchange="saveAgnesConfig()"
+                  style="padding:2px 8px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);
+                         border-radius:4px;color:rgba(255,255,255,0.8);font-size:11px;cursor:pointer;outline:none">
+            <option value="agnes-image-2.1-flash">agnes-image-2.1-flash (文生图)</option>
+            <option value="agnes-image-2.0-flash">agnes-image-2.0-flash (图生图)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- SiliconFlow Engine Options (Fallback) -->
+      <div id="sfOpts" style="display:none">
+        <div style="font-size:11px;color:rgba(39,174,96,0.9);margin-bottom:8px;padding:8px 10px;background:rgba(39,174,96,0.08);border-radius:8px;border:1px solid rgba(39,174,96,0.15)">
+          🚀 SiliconFlow 硅基流动 — 国内免费AI出图引擎<br>
+          <span style="opacity:0.7">✅ 全自动生成 ✅ 无需等待AI处理 ✅ 支持中文Prompt ✅ 速度快(~5-15s/张)</span>
+        </div>
+
+        <!-- ✅ 新增：余额显示 + 充值入口 -->
+        <div id="balanceArea" style="margin-bottom:12px;padding:10px 12px;background:rgba(255,255,255,0.06);border-radius:10px;border:1px solid rgba(255,255,255,0.1)">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+            <span style="font-size:12px;color:rgba(255,255,255,0.6);font-weight:600">💰 账户余额</span>
+            <button onclick="checkBalance()" style="font-size:10px;padding:3px 10px;background:rgba(0,210,255,0.15);color:#00D2FF;border:1px solid rgba(0,210,255,0.3);border-radius:6px;cursor:pointer">刷新</button>
+          </div>
+          <div id="balanceDisplay" style="font-size:14px;color:rgba(255,255,255,0.8);margin-bottom:8px">
+            <span style="color:rgba(255,255,255,0.4)">点击"刷新"查询余额</span>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <a href="https://cloud.siliconflow.cn/account/charge" target="_blank" style="font-size:11px;padding:4px 12px;background:linear-gradient(135deg,#6C5CE7,#A29BFE);color:#fff;border:none;border-radius:6px;cursor:pointer;text-decoration:none;display:inline-block">💳 立即充值</a>
+            <span style="font-size:10px;color:rgba(255,255,255,0.35)">充值后自动生效</span>
+          </div>
+        </div>
+
+        <!-- ✅ 新增：免费/付费模型切换 -->
+        <div style="margin-bottom:12px;padding:10px 12px;background:rgba(255,255,255,0.06);border-radius:10px;border:1px solid rgba(255,255,255,0.1)">
+          <div style="font-size:12px;color:rgba(255,255,255,0.6);font-weight:600;margin-bottom:8px">🎨 模型选择</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button id="freeModelBtn" onclick="switchModelType(false)" style="font-size:11px;padding:6px 14px;border-radius:8px;cursor:pointer;border:1.5px solid rgba(39,174,96,0.4);background:rgba(39,174,96,0.15);color:#27ae60;font-weight:600">🆓 免费模型 (Kolors)</button>
+            <button id="paidModelBtn" onclick="switchModelType(true)" style="font-size:11px;padding:6px 14px;border-radius:8px;cursor:pointer;border:1.5px solid rgba(255,255,255,0.15);background:transparent;color:rgba(255,255,255,0.5)">⭐ 付费模型 (Z-Image-Turbo) - 效果最好</button>
+          </div>
+          <div id="modelTypeHint" style="font-size:10px;color:rgba(255,255,255,0.35);margin-top:6px">当前使用：免费模型（Kolors）- 适合模特展示图</div>
+        </div>
+        <div id="sfKeyArea" style="margin-bottom:10px">
+          <label style="font-size:11px;color:rgba(255,255,255,0.5);display:block;margin-bottom:4px">API Key（免费注册获取）</label>
+          <input type="password" id="sfApiKeyInput" placeholder="sk-..." 
+            style="width:100%;padding:8px 12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);border-radius:8px;
+                   color:#fff;font-size:13px;box-sizing:border-box;outline:none;transition:border-color 0.2s"
+                 onfocus="this.style.borderColor='rgba(39,174,96,0.6)'" onblur="this.style.borderColor='rgba(255,255,255,0.15)'">
+          <div style="display:flex;align-items:center;gap:8px;margin-top:6px">
+            <button onclick="saveSfConfig()" style="font-size:11px;padding:4px 14px;background:rgba(39,174,96,0.2);color:#27ae60;border:1px solid rgba(39,174,96,0.4);border-radius:6px;cursor:pointer">保存 Key</button>
+            <a href="https://cloud.siliconflow.cn/account/ak" target="_blank" style="font-size:11px;color:rgba(39,174,96,0.7);text-decoration:none">
+              没有Key？点此免费注册 →
+            </a>
+            <span id="sfKeyStatus" style="font-size:11px;color:rgba(243,156,18,0.8)"></span>
+          </div>
+        </div>
+        <div style="font-size:11px;display:flex;gap:12px;flex-wrap:wrap">
+          <span style="color:rgba(255,255,255,0.35)">模型:</span>
+          <select id="sfModelSelect" onchange="saveSfConfig()" 
+                  style="padding:2px 8px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);
+                         border-radius:4px;color:rgba(255,255,255,0.8);font-size:11px;cursor:pointer;outline:none">
+            <option value="Kwai-Kolors/Kolors">Kolors（推荐，中文优化）</option>
+            <option value="black-forest-labs/FLUX.1-schnell">FLUX.1-schnell（快速）</option>
+            <option value="stabilityai/stable-diffusion-3-medium">SD3 Medium</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- AI Agent Engine Options -->
+      <div id="agentOpts" style="display:none">
+        <div style="font-size:11px;color:rgba(0,210,255,0.9);margin-bottom:10px;padding:8px 10px;background:rgba(0,210,255,0.08);border-radius:8px;border:1px solid rgba(0,210,255,0.15)">
+          🤖 AI Agent 手动模式 — AI助手手动生成图片<br>
+          <span style="opacity:0.7">⚠️ 需要AI助手在线处理，可能需要等待</span>
+        </div>
+      </div>
+
+      <!-- ImageGen Engine Options -->
+      <div id="imagegenOpts" style="display:none">
+        <div style="font-size:11px;color:rgba(243,156,18,0.8);margin-bottom:10px;padding:8px 10px;background:rgba(243,156,18,0.08);border-radius:8px;border:1px solid rgba(243,156,18,0.15)">
+          ⚠️ Pollinations.ai 实验性引擎 — 可能返回402付费墙<br>
+          <span style="opacity:0.6">如生成失败，请切换到 Puter.js 引擎（免费稳定）</span>
+        </div>
+      </div>
+
+      <!-- Puter.js Engine Options -->
+      <div id="puterOpts" style="display:none">
+      <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;font-weight:600">Puter.js 模型</div>
+      <div class="model-tags" id="wsModels">
+        <span class="model-tag selected" data-model="gpt-1" onclick="selectModel(this)">⚡ GPT Image 1（最快免费）</span>
+        <span class="model-tag" data-model="gpt-2" onclick="selectModel(this)">🎨 GPT Image 2（高质量）</span>
+        <span class="model-tag" data-model="dall-e-3" onclick="selectModel(this)">🖼️ DALL-E 3</span>
+        <span class="model-tag" data-model="flux-schnell" onclick="selectModel(this)">🔥 Flux Schnell</span>
+        <span class="model-tag" data-model="flux-pro" onclick="selectModel(this)">💎 Flux Pro</span>
+        <span class="model-tag" data-model="gemini" onclick="selectModel(this)">✨ Gemini 图像</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;padding:8px 12px;background:rgba(255,255,255,0.06);border-radius:10px;border:1px solid rgba(255,255,255,0.08)">
+        <div id="puterDot" style="width:8px;height:8px;border-radius:50%;background:#555;flex-shrink:0"></div>
+        <span id="puterStatusText" style="font-size:11px;color:rgba(255,255,255,0.4)">检测 Puter.js...</span>
+      </div>
+      <button class="tool-gen-btn" onclick="testPuterConnection()" style="margin-bottom:8px;background:rgba(39,174,96,0.15);color:#27ae60;border:1px solid rgba(39,174,96,0.25);font-size:13px;padding:10px">🔌 测试 Puter 连接</button>
+      </div><!-- end puterOpts -->
+      <div id="engineStatusArea" style="display:flex;align-items:center;gap:8px;margin-bottom:10px;padding:8px 12px;background:rgba(39,174,96,0.08);border-radius:10px;border:1px solid rgba(39,174,96,0.15)">
+        <div id="engineDot" style="width:8px;height:8px;border-radius:50%;background:#27ae60;flex-shrink:0"></div>
+        <span id="engineStatusText" style="font-size:11px;color:rgba(39,174,96,0.9)">Agnes AI 多引擎模式 — 输入API Key后点击生成</span>
+      </div>
+      <button class="tool-gen-btn" id="wsGenBtn" onclick="startWorkspaceGen()">🚀 AI 开始生成</button>
+      <button class="tool-gen-btn" id="wsGenFullBtn" onclick="startFullSetGen()" style="margin-top:8px;background:linear-gradient(135deg,#FF6B35,#f39c12);font-size:14px;padding:13px 20px">🎯 生成全套7张电商图</button>
+      <button class="tool-gen-btn" id="wsStopBtn" onclick="stopWorkspaceGen()" style="display:none;background:rgba(231,76,60,0.2);color:#e74c3c;border:1px solid rgba(231,76,60,0.3)">⏹ 停止生成</button>
+      <div id="globalError" style="display:none;margin-top:10px;padding:8px 12px;background:rgba(231,76,60,0.15);border:1px solid rgba(231,76,60,0.25);border-radius:8px;font-size:11px;color:#e74c3c;text-align:center"></div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.3);margin-top:10px;text-align:center">免费使用 · 无需注册 · 高清输出</div>
+    </div>
+    <div class="tool-right" id="wsRight">
+      <div class="result-area" id="wsResultArea">
+        <div style="text-align:center">
+          <div style="font-size:48px;margin-bottom:12px;opacity:0.3">🎨</div>
+          <p>填写左侧信息后点击「AI 开始生成」</p>
+          <p style="font-size:12px;margin-top:6px;opacity:0.5">AI 将为您生成高质量电商素材</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing -->
+<section class="section" id="pricing">
+  <div class="section-header fade-in">
+    <div class="section-tag tag-orange">PRICING</div>
+    <h2 class="section-title">简单透明的价格</h2>
+    <p class="section-desc">免费开始，按需升级，无隐藏费用</p>
+  </div>
+  <div class="pricing-grid">
+    <div class="price-card fade-in">
+      <div class="price-name">免费版</div>
+      <div class="price-amount"><span class="yen">¥</span>0</div>
+      <div class="price-period">永久免费</div>
+      <ul class="price-features">
+        <li>每日 5 张免费生成</li>
+        <li>基础 AI 模型</li>
+        <li>标准分辨率输出</li>
+        <li>2 种生成类型</li>
+        <li>社区支持</li>
+      </ul>
+      <button class="price-btn price-btn-outline">免费开始</button>
+    </div>
+    <div class="price-card featured fade-in">
+      <div class="price-name">专业版</div>
+      <div class="price-amount"><span class="yen">¥</span>99</div>
+      <div class="price-period">/ 月</div>
+      <ul class="price-features">
+        <li>每日 200 张生成</li>
+        <li>高级 AI 模型</li>
+        <li>4K 超高清输出</li>
+        <li>全部 6 种生成类型</li>
+        <li>优先邮件支持</li>
+        <li>批量生成功能</li>
+      </ul>
+      <button class="price-btn price-btn-primary">立即升级</button>
+    </div>
+    <div class="price-card fade-in">
+      <div class="price-name">企业版</div>
+      <div class="price-amount"><span class="yen">¥</span>399</div>
+      <div class="price-period">/ 月</div>
+      <ul class="price-features">
+        <li>无限量生成</li>
+        <li>旗舰 AI 模型</li>
+        <li>4K + PSD 源文件</li>
+        <li>API 接入支持</li>
+        <li>专属客户经理</li>
+        <li>团队多人协作</li>
+      </ul>
+      <button class="price-btn price-btn-outline">联系销售</button>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section" id="faq">
+  <div class="section-header fade-in">
+    <div class="section-tag tag-purple">FAQ</div>
+    <h2 class="section-title">常见问题</h2>
+    <p class="section-desc">还有疑问？这里或许有您要的答案</p>
+  </div>
+  <div class="faq-list">
+    <div class="faq-item fade-in">
+      <button class="faq-q" onclick="toggleFaq(this)">生成的图片可以用于商业用途吗？<span class="arrow">▼</span></button>
+      <div class="faq-a"><p>可以。通过本工具生成的图片版权归您所有，可自由用于淘宝、天猫、亚马逊、Shopify 等所有电商平台。但建议您避免使用受商标保护的品牌元素。</p></div>
+    </div>
+    <div class="faq-item fade-in">
+      <button class="faq-q" onclick="toggleFaq(this)">需要懂英文提示词或 AI 技术吗？<span class="arrow">▼</span></button>
+      <div class="faq-a"><p>完全不需要。您只需要用中文描述产品名称和卖点，AI 会自动理解并生成符合要求的图片。无需任何提示词工程经验。</p></div>
+    </div>
+    <div class="faq-item fade-in">
+      <button class="faq-q" onclick="toggleFaq(this)">免费版有哪些限制？<span class="arrow">▼</span></button>
+      <div class="faq-a"><p>免费版每天可生成 5 张图片，使用基础 AI 模型，输出标准分辨率。对于 occasional use 完全够用。如需更多数量和更高清输出，可选择专业版。</p></div>
+    </div>
+    <div class="faq-item fade-in">
+      <button class="faq-q" onclick="toggleFaq(this)">支持哪些电商平台规范？<span class="arrow">▼</span></button>
+      <div class="faq-a"><p>目前支持 Amazon、淘宝/天猫、京东、拼多多、TikTok Shop、Shopify、小红书、抖音等主流平台。AI 会自动按照对应平台的图片尺寸和比例规范生成。</p></div>
+    </div>
+    <div class="faq-item fade-in">
+      <button class="faq-q" onclick="toggleFaq(this)">生成的图片可以修改吗？<span class="arrow">▼</span></button>
+      <div class="faq-a"><p>可以。每次生成后您都可以对结果进行微调，包括更换背景、调整模特姿势、修改配色等。专业版还支持下载 PSD 可编辑源文件。</p></div>
+    </div>
+    <div class="faq-item fade-in">
+      <button class="faq-q" onclick="toggleFaq(this)">AI 生成的模特图真人感怎么样？<span class="arrow">▼</span></button>
+      <div class="faq-a"><p>我们使用业界领先的 Flux 系列 AI 模型，生成的模特图具有极高的真实感，肤色、面料质感、光影效果均达到商业摄影级别，可直接用于电商平台主图。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <h2 class="fade-in">准备好提升您的电商转化率了吗？</h2>
+  <p class="fade-in">免费注册，3 分钟获得专业级电商素材。无需信用卡，即刻开始。</p>
+  <button class="cta-btn fade-in" onclick="scrollToTool()">免费开始使用 →</button>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+        <div style="width:32px;height:32px;background:linear-gradient(135deg,#6C5CE7,#A29BFE);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px">🎨</div>
+        <span style="font-size:18px;font-weight:800;color:#fff">AIDesignKit</span>
+      </div>
+      <p>专为跨境与国内电商卖家打造的 AI 做图神器，让每个人都能做出专业级电商素材。</p>
+    </div>
+    <div class="footer-col">
+      <h4>产品功能</h4>
+      <a href="#">白底主图生成</a>
+      <a href="#">场景图生成</a>
+      <a href="#">AI 模特展示</a>
+      <a href="#">卖点信息图</a>
+      <a href="#">详情页套图</a>
+    </div>
+    <div class="footer-col">
+      <h4>支持平台</h4>
+      <a href="#">Amazon 亚马逊</a>
+      <a href="#">淘宝/天猫</a>
+      <a href="#">TikTok Shop</a>
+      <a href="#">Shopify 独立站</a>
+      <a href="#">小红书/抖音</a>
+    </div>
+    <div class="footer-col">
+      <h4>帮助与支持</h4>
+      <a href="#">使用教程</a>
+      <a href="#">常见问题</a>
+      <a href="#">联系客服</a>
+      <a href="#">服务条款</a>
+      <a href="#">隐私政策</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © 2024-2026 AI DesignKit. All rights reserved. | 京ICP备XXXXXXXX号
+  </div>
+</footer>
+
+<!-- Request Modal (removed - now uses direct Puter.js generation) -->
+
+<!-- AI Engine: Puter.js (fallback) + ImageGen Backend (primary) -->
+<script src="https://js.puter.com/v2/"></script>
+<script>
+// ===== Engine Selection =====
+let currentEngine = 'multi'; // 'multi' (Agnes AI primary, auto fallback) | 'siliconflow' | 'puter' | 'agent'
+
+function selectEngine(el) {
+  document.querySelectorAll('#engineSelector .model-tag').forEach(t => t.classList.remove('selected'));
+  el.classList.add('selected');
+  currentEngine = el.dataset.engine;
+
+  const agnesOpts = document.getElementById('agnesOpts');
+  const sfOpts = document.getElementById('sfOpts');
+  const agentOpts = document.getElementById('agentOpts');
+  const pOpts = document.getElementById('puterOpts');
+
+  // Hide all first
+  if (agnesOpts) agnesOpts.style.display = 'none';
+  if (sfOpts) sfOpts.style.display = 'none';
+  if (agentOpts) agentOpts.style.display = 'none';
+  if (pOpts) pOpts.style.display = 'none';
+
+  if (currentEngine === 'multi' || currentEngine === 'agnes') {
+    if (agnesOpts) agnesOpts.style.display = 'block';
+    document.getElementById('engineDot').style.background = '#27ae60';
+    document.getElementById('engineStatusText').textContent = 'Agnes AI 多引擎模式 — 输入API Key后点击生成';
+    document.getElementById('engineStatusText').style.color = 'rgba(39,174,96,0.9)';
+    document.getElementById('engineStatusArea').style.background = 'rgba(39,174,96,0.08)';
+    document.getElementById('engineStatusArea').style.borderColor = 'rgba(39,174,96,0.15)';
+    checkAgnesStatus();
+  } else if (currentEngine === 'siliconflow') {
+    if (sfOpts) sfOpts.style.display = 'block';
+    checkSfStatus();
+    document.getElementById('engineDot').style.background = '#27ae60';
+    document.getElementById('engineStatusText').textContent = '🚀 SiliconFlow 全自动引擎 — 输入API Key后点击生成';
+    document.getElementById('engineStatusText').style.color = 'rgba(39,174,96,0.9)';
+    document.getElementById('engineStatusArea').style.background = 'rgba(39,174,96,0.08)';
+    document.getElementById('engineStatusArea').style.borderColor = 'rgba(39,174,96,0.15)';
+  } else if (currentEngine === 'puter') {
+    if (pOpts) pOpts.style.display = 'block';
+    document.getElementById('engineDot').style.background = puterReady ? '#27ae60' : '#f39c12';
+    document.getElementById('engineStatusText').textContent = puterReady ? '🌐 Puter.js 引擎就绪 (' + (modelConfig[selectedModel]?.label || '') + ')' : '⏳ 检测 Puter.js 中...';
+    document.getElementById('engineStatusText').style.color = puterReady ? 'rgba(39,174,96,0.9)' : 'rgba(243,156,18,0.8)';
+    document.getElementById('engineStatusArea').style.background = puterReady ? 'rgba(39,174,96,0.1)' : 'rgba(255,255,255,0.06)';
+    document.getElementById('engineStatusArea').style.borderColor = puterReady ? 'rgba(39,174,96,0.2)' : 'rgba(255,255,255,0.08)';
+  } else if (currentEngine === 'agent') {
+    if (agentOpts) agentOpts.style.display = 'block';
+    document.getElementById('engineDot').style.background = '#00D2FF';
+    document.getElementById('engineStatusText').textContent = '🤖 AI Agent 手动模式 — 需要AI助手在线处理';
+    document.getElementById('engineStatusText').style.color = 'rgba(0,210,255,0.9)';
+    document.getElementById('engineStatusArea').style.background = 'rgba(0,210,255,0.08)';
+    document.getElementById('engineStatusArea').style.borderColor = 'rgba(0,210,255,0.15)';
+  }
+  console.log('Engine switched to:', currentEngine);
+}
+
+// ===== SiliconFlow Config Functions =====
+
+async function checkSfStatus() {
+  try {
+    const res = await fetch('/api/sf-status');
+    const data = await res.json();
+    const statusEl = document.getElementById('sfKeyStatus');
+    if (data.configured && data.hasKey) {
+      statusEl.textContent = '✅ Key已配置: ' + data.keyPreview;
+      statusEl.style.color = '#27ae60';
+      document.getElementById('engineDot').style.background = '#27ae60';
+      document.getElementById('engineStatusText').textContent = '🚀 SiliconFlow 就绪 — 点击生成！';
+    } else {
+      statusEl.textContent = '⚠️ 未配置Key，请先输入并保存';
+      statusEl.style.color = '#f39c12';
+      document.getElementById('engineDot').style.background = '#f39c12';
+      document.getElementById('engineStatusText').textContent = '⚠️ 请先输入 SiliconFlow API Key 并保存';
+    }
+    
+    // Set model selector value
+    if (data.model) {
+      const sel = document.getElementById('sfModelSelect');
+      if (sel) sel.value = data.model;
+    }
+  } catch(e) {
+    console.warn('SF status check failed:', e);
+  }
+}
+
+async function saveSfConfig() {
+  const apiKey = document.getElementById('sfApiKeyInput').value.trim();
+  const model = document.getElementById('sfModelSelect').value;
+  
+  try {
+    const res = await fetch('/api/sf-config', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ apiKey, model })
+    });
+    const data = await res.json();
+    
+    if (data.success) {
+      const statusEl = document.getElementById('sfKeyStatus');
+      if (apiKey) {
+        statusEl.textContent = '✅ 已保存!';
+        statusEl.style.color = '#27ae60';
+        document.getElementById('engineDot').style.background = '#27ae60';
+        document.getElementById('engineStatusText').textContent = '🚀 SiliconFlow 就绪 — 点击生成！';
+        document.getElementById('engineStatusText').style.color = 'rgba(39,174,96,0.9)';
+        document.getElementById('engineStatusArea').style.background = 'rgba(39,174,96,0.08)';
+        document.getElementById('engineStatusArea').style.borderColor = 'rgba(39,174,96,0.15)';
+      }
+    }
+  } catch(e) {
+    alert('保存失败: ' + e.message);
+  }
+}
+
+// ===== Agnes AI Config Functions =====
+
+async function checkAgnesStatus() {
+  try {
+    const res = await fetch('/api/engine-status');
+    const data = await res.json();
+    const statusEl = document.getElementById('agnesKeyStatus');
+
+    if (data.engines && data.engines.agnes && data.engines.agnes.hasKey) {
+      statusEl.textContent = 'Key: ' + data.engines.agnes.keyPreview;
+      statusEl.style.color = '#27ae60';
+      document.getElementById('engineDot').style.background = '#27ae60';
+      document.getElementById('engineStatusText').textContent = 'Agnes AI 就绪 — 点击生成！';
+      // Pre-fill input
+      const inp = document.getElementById('agnesApiKeyInput');
+      if (inp && !inp.value) inp.value = data.engines.agnes.apiKey || '';
+    } else {
+      statusEl.textContent = '请输入API Key';
+      statusEl.style.color = '#f39c12';
+      document.getElementById('engineDot').style.background = '#f39c12';
+      document.getElementById('engineStatusText').textContent = '请先输入 Agnes AI API Key 并保存';
+    }
+
+    if (data.engines && data.engines.agnes && data.engines.agnes.model) {
+      const sel = document.getElementById('agnesModelSelect');
+      if (sel) sel.value = data.engines.agnes.model;
+    }
+  } catch(e) {
+    console.warn('Agnes status check failed:', e);
+  }
+}
+
+async function saveAgnesConfig() {
+  const apiKey = document.getElementById('agnesApiKeyInput').value.trim();
+  const model = document.getElementById('agnesModelSelect').value;
+
+  try {
+    const res = await fetch('/api/engine-config', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ engine: 'agnes', apiKey, model, active: 'agnes' })
+    });
+    const data = await res.json();
+
+    if (data.success) {
+      const statusEl = document.getElementById('agnesKeyStatus');
+      if (apiKey) {
+        statusEl.textContent = '已保存!';
+        statusEl.style.color = '#27ae60';
+        document.getElementById('engineDot').style.background = '#27ae60';
+        document.getElementById('engineStatusText').textContent = 'Agnes AI 就绪 — 点击生成！';
+        document.getElementById('engineStatusText').style.color = 'rgba(39,174,96,0.9)';
+        document.getElementById('engineStatusArea').style.background = 'rgba(39,174,96,0.08)';
+        document.getElementById('engineStatusArea').style.borderColor = 'rgba(39,174,96,0.15)';
+      }
+    }
+  } catch(e) {
+    alert('保存失败: ' + e.message);
+  }
+}
+
+// ===== Puter.js Engine Status (fallback only) =====
+let puterReady = false;
+let selectedModel = 'gpt-1';
+// Correct Puter.js model IDs (verified from official docs)
+const modelConfig = {
+  'gpt-1':     { model: 'gpt-image-1', provider: 'openai-image-generation', label: 'GPT Image 1' },
+  'gpt-2':     { model: 'gpt-image-2', provider: 'openai-image-generation', label: 'GPT Image 2' },
+  'dall-e-3':  { model: 'dall-e-3', provider: 'openai-image-generation', label: 'DALL-E 3' },
+  'flux-schnell': { model: 'black-forest-labs/flux-schnell', provider: 'replicate-image-generation', label: 'Flux Schnell' },
+  'flux-pro':  { model: 'black-forest-labs/flux-1.1-pro', provider: 'replicate-image-generation', label: 'Flux Pro' },
+  'gemini':    { model: 'gemini-2.5-flash-image-preview', provider: 'gemini', label: 'Gemini' }
+};
+
+function selectModel(el) {
+  document.querySelectorAll('#wsModels .model-tag').forEach(t => t.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedModel = el.dataset.model;
+  const cfg = modelConfig[selectedModel];
+  console.log('Selected model:', cfg.label, '→', cfg.model, '(', cfg.provider, ')');
+  // Update status text
+  if (puterReady) {
+    document.getElementById('puterStatusText').textContent = 'AI 引擎已就绪 (' + cfg.label + ')';
+  }
+}
+
+let puterCheckCount = 0;
+function checkPuterStatus() {
+  puterCheckCount++;
+  if (typeof puter !== 'undefined' && puter.ai && typeof puter.ai.txt2img === 'function') {
+    puterReady = true;
+    document.getElementById('puterDot').style.background = '#27ae60';
+    const cfg = modelConfig[selectedModel];
+    document.getElementById('puterStatusText').textContent = 'AI 引擎已就绪 (' + (cfg ? cfg.label : selectedModel) + ')';
+    document.getElementById('puterStatusText').style.color = 'rgba(39,174,96,0.8)';
+    console.log('✅ Puter.js ready! Methods:', Object.keys(puter.ai));
+  } else if (puterCheckCount > 15) {
+    // Gave up after ~30 seconds
+    document.getElementById('puterDot').style.background = '#e74c3c';
+    document.getElementById('puterStatusText').textContent = 'AI 引擎加载失败，请刷新重试';
+    document.getElementById('puterStatusText').style.color = 'rgba(231,76,60,0.8)';
+    console.log('❌ Puter.js failed to load after 30s');
+  } else {
+    document.getElementById('puterDot').style.background = '#f39c12';
+    document.getElementById('puterStatusText').textContent = 'AI 引擎连接中... (' + puterCheckCount + '/15)';
+    setTimeout(checkPuterStatus, 2000);
+  }
+}
+
+// Start checking after page load
+setTimeout(checkPuterStatus, 1500);
+setTimeout(() => {
+  if (currentEngine === 'multi' || currentEngine === 'agnes') checkAgnesStatus();
+  else if (currentEngine === 'siliconflow') checkSfStatus();
+}, 2000);
+
+// ===== Global Error Handler =====
+window.onerror = function(msg, url, line) {
+  const el = document.getElementById('globalError');
+  if (el) { el.style.display = 'block'; el.textContent = 'JS错误: ' + msg.substring(0, 80); }
+  console.error('Global error:', msg, 'at line', line);
+};
+
+// ===== Test Puter.js Connection =====
+async function testPuterConnection() {
+  if (!puterReady) {
+    alert('AI 引擎尚未加载完成，请稍等...');
+    return;
+  }
+  const btn = document.getElementById('wsTestBtn');
+  const origText = btn.textContent;
+  btn.textContent = '⏳ 测试中...';
+  btn.style.opacity = '0.6';
+
+  const cfg = modelConfig[selectedModel];
+  try {
+    // Test with a very simple prompt and short timeout
+    const testPromise = puter.ai.txt2img('A simple red circle on white background', {
+      provider: cfg.provider,
+      model: cfg.model
+    });
+
+    // 45 second timeout
+    const timeoutPromise = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error('测试超时（45秒）')), 45000)
+    );
+
+    const result = await Promise.race([testPromise, timeoutPromise]);
+    let imgUrl = '';
+    if (result instanceof HTMLImageElement) imgUrl = result.src;
+    else if (typeof result === 'string') imgUrl = result;
+    else if (result && result.src) imgUrl = result.src;
+
+    if (imgUrl) {
+      alert('✅ 连接测试成功！\n模型: ' + cfg.label + '\n图片已生成，可以开始使用了。');
+      console.log('✅ Test success with', cfg.label);
+    } else {
+      alert('⚠️ 连接成功但返回结果异常');
+    }
+  } catch (err) {
+    alert('❌ 连接测试失败\n模型: ' + cfg.label + '\n错误: ' + (err.message || '未知错误') + '\n\n建议:\n1. 换其他模型再试\n2. 检查网络连接\n3. 刷新页面重试');
+    console.error('❌ Test failed:', err);
+  }
+  btn.textContent = origText;
+  btn.style.opacity = '1';
+}
+
+// ===== Smooth Scroll & Header =====
+window.addEventListener('scroll', () => {
+  document.getElementById('header').classList.toggle('scrolled', window.scrollY > 30);
+});
+function scrollToTool() {
+  document.getElementById('tool').scrollIntoView({behavior:'smooth'});
+}
+
+// ===== FAQ =====
+function toggleFaq(btn) {
+  const item = btn.parentElement;
+  item.classList.toggle('open');
+}
+
+// ===== Fade In on Scroll =====
+const fadeEls = document.querySelectorAll('.fade-in');
+const fadeObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); fadeObserver.unobserve(e.target); }});
+}, {threshold:0.12});
+fadeEls.forEach(el => fadeObserver.observe(el));
+
+// ===== Workspace: Upload =====
+let wsFile = null;
+let refFile = null;
+const wsZone = document.getElementById('wsUploadZone');
+const wsInput = document.getElementById('wsFileInput');
+
+wsZone.addEventListener('click', () => wsInput.click());
+wsZone.addEventListener('dragover', e => { e.preventDefault(); wsZone.style.borderColor = '#00D2FF'; });
+wsZone.addEventListener('dragleave', () => { wsZone.style.borderColor = 'rgba(255,255,255,0.15)'; });
+wsZone.addEventListener('drop', e => {
+  e.preventDefault();
+  wsZone.style.borderColor = 'rgba(255,255,255,0.15)';
+  if (e.dataTransfer.files.length) handleWsFile(e.dataTransfer.files[0]);
+});
+wsInput.addEventListener('change', e => { if (e.target.files.length) handleWsFile(e.target.files[0]); });
+
+function handleWsFile(file) {
+  if (!file.type.startsWith('image/')) return alert('请上传图片文件');
+  wsFile = file;
+  const reader = new FileReader();
+  reader.onload = e => {
+    wsZone.innerHTML = `<img src="${e.target.result}" style="max-width:100%;max-height:120px;border-radius:8px"><p style="font-size:11px;margin-top:6px;opacity:0.5">点击可重新上传</p>`;
+    wsZone.style.borderColor = 'rgba(0,210,255,0.4)';
+    wsZone.style.background = 'rgba(0,210,255,0.05)';
+  };
+  reader.readAsDataURL(file);
+}
+
+// ===== Reference Image Upload =====
+const refZone = document.getElementById('refUploadZone');
+const refInput = document.getElementById('refFileInput');
+
+refZone.addEventListener('click', () => refInput.click());
+refZone.addEventListener('dragover', e => { e.preventDefault(); refZone.style.borderColor = '#FF6B35'; });
+refZone.addEventListener('dragleave', () => { refZone.style.borderColor = 'rgba(255,255,255,0.15)'; });
+refZone.addEventListener('drop', e => {
+  e.preventDefault();
+  refZone.style.borderColor = 'rgba(255,255,255,0.15)';
+  if (e.dataTransfer.files.length) handleRefFile(e.dataTransfer.files[0]);
+});
+refInput.addEventListener('change', e => { if (e.target.files.length) handleRefFile(e.target.files[0]); });
+
+function handleRefFile(file) {
+  if (!file.type.startsWith('image/')) return alert('请上传图片文件');
+  refFile = file;
+  const reader = new FileReader();
+  reader.onload = e => {
+    document.getElementById('refPreviewImg').src = e.target.result;
+    document.getElementById('refPreview').style.display = 'block';
+    refZone.style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+}
+
+function removeRefImage() {
+  refFile = null;
+  document.getElementById('refPreview').style.display = 'none';
+  refZone.style.display = 'block';
+  document.getElementById('refFileInput').value = '';
+  document.getElementById('refDescription').value = '';
+}
+
+// ===== Generate Full Set (7 images) =====
+async function startFullSetGen() {
+  // Auto-select all 7 types
+  document.querySelectorAll('#wsTypes .type-tag').forEach(tag => {
+    tag.classList.add('selected');
+  });
+
+  // Start generation
+  await startWorkspaceGen();
+}
+
+// ===== Workspace: Type Tags =====
+document.querySelectorAll('#wsTypes .type-tag').forEach(tag => {
+  tag.addEventListener('click', () => tag.classList.toggle('selected'));
+});
+
+// ===== Workspace: Generate (Dual Engine) =====
+let wsGenerating = false;
+let wsAbort = false;
+let currentTaskId = null;
+let pollInterval = null;
+
+async function startWorkspaceGen() {
+  if (wsGenerating) return;
+
+  const name = document.getElementById('wsName').value.trim();
+  if (!name) { alert('请填写产品名称！'); return; }
+
+  const types = [...document.querySelectorAll('#wsTypes .type-tag.selected')].map(t => t.dataset.type);
+  if (types.length === 0) { alert('请至少选择一种生成类型！'); return; }
+
+  // Branch by engine
+  if (currentEngine === 'multi' || currentEngine === 'siliconflow' || currentEngine === 'agnes') {
+    // Multi-engine / Agnes AI / SiliconFlow: auto-generate via backend API (fully automatic)
+    await startAgentGen(name, types);
+  } else if (currentEngine === 'agent') {
+    // AI Agent: same flow but manual processing
+    await startAgentGen(name, types);
+  } else if (currentEngine === 'puter') {
+    await startPuterGen(name, types);
+  }
+}
+
+// ✅ 新增：将参考图文件转换为 base64
+function getRefImageBase64() {
+  return new Promise((resolve, reject) => {
+    if (!refFile) {
+      resolve(null); // 没有参考图
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      // reader.result 是 "data:image/jpeg;base64,/9j/4AA..." 格式
+      resolve(reader.result);
+    };
+    reader.onerror = () => reject(new Error('参考图读取失败'));
+    reader.readAsDataURL(refFile);
+  });
+}
+
+// ========== AI AGENT ENGINE MODE (Primary - Built-in) ==========
+async function startAgentGen(name, types) {
+  wsGenerating = true;
+  wsAbort = false;
+
+  const selling = document.getElementById('wsSelling').value.trim();
+  const refDescription = document.getElementById('refDescription').value.trim();
+  const resultArea = document.getElementById('wsResultArea');
+
+  // ✅ 关键：读取参考图并转换为 base64
+  let refImageBase64 = null;
+  try {
+    refImageBase64 = await getRefImageBase64();
+    if (refImageBase64) {
+      console.log('✅ Reference image loaded, base64 length:', refImageBase64.length);
+    } else {
+      console.log('ℹ️ No reference image provided');
+    }
+  } catch (err) {
+    console.warn('⚠️ Failed to load reference image:', err.message);
+  }
+
+  resultArea.innerHTML = `<div class="result-grid" id="wsResultGrid" style="grid-template-columns:repeat(${Math.min(types.length,3)},1fr);gap:14px"></div>`;
+  const grid = document.getElementById('wsResultGrid');
+
+  const typeNames = {'whitebg':'白底主图','model':'模特展示','scene':'场景图','infographic':'卖点图','sizechart':'尺寸图','detail':'详情页','collocation':'搭配对比图'};
+
+  // Create cells
+  for (const type of types) {
+    const cell = document.createElement('div');
+    cell.className = 'result-thumb';
+    cell.id = `wsCell-${type}`;
+    cell.innerHTML = `
+      <div class="cell-loading" id="load-${type}">
+        <div class="spinner"></div>
+        <div style="font-size:12px;font-weight:600;margin-top:8px;color:rgba(0,210,255,0.9)">${typeNames[type]}</div>
+        <div style="font-size:10px;color:rgba(0,210,255,0.6);margin-top:4px" id="timer-${type}">🤖 等待AI Agent...</div>
+      </div>
+      <img id="img-${type}" style="display:none;width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:10px;cursor:pointer" onclick="downloadImg(this.src,'${typeNames[type]}')">
+      <div class="cell-error" id="err-${type}" style="display:none;text-align:center;padding:20px">
+        <div style="font-size:28px">⚠️</div>
+        <div style="font-size:12px;color:#e74c3c;margin-top:6px">生成失败</div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-top:4px" id="errmsg-${type}"></div>
+      </div>`;
+    grid.appendChild(cell);
+  }
+
+  // ✅ 修改：发送参考图 base64 给后端
+  try {
+    const requestBody = {
+      productName: name,
+      sellingPoints: selling,
+      types: types,
+      refDescription: refDescription
+    };
+
+    // ✅ 关键：如果有参考图，添加到请求体
+    if (refImageBase64) {
+      requestBody.refImage = refImageBase64;
+      console.log('✅ Sending refImage to backend (length:', refImageBase64.length, ')');
+    }
+
+    const submitRes = await fetch('/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(requestBody)
+    });
+    const submitData = await submitRes.json();
+
+    if (!submitRes.ok || submitData.error) {
+      throw new Error(submitData.error || '提交任务失败');
+    }
+
+    console.log('✅ Task submitted:', submitData.taskId);
+    const taskId = submitData.taskId;
+
+    // Update all cells to show "submitted"
+    for (const type of types) {
+      const timerEl = document.getElementById(`timer-${type}`);
+      if (timerEl) timerEl.textContent = '🤡 任务已提交，AI Agent 处理中...';
+    }
+
+    // Poll for results
+    await pollAgentResults(taskId, types);
+
+  } catch (err) {
+    console.error('❌ Agent submission error:', err);
+    for (const type of types) {
+      document.getElementById(`load-${type}`).style.display = 'none';
+      document.getElementById(`err-${type}`).style.display = 'block';
+      document.getElementById(`errmsg-${type}`).textContent = err.message;
+    }
+  }
+
+  wsGenerating = false;
+  document.getElementById('wsGenBtn').style.display = 'block';
+  document.getElementById('wsStopBtn').style.display = 'none';
+  if (document.getElementById('wsGenFullBtn')) document.getElementById('wsGenFullBtn').style.display = 'block';
+}
+
+async function pollAgentResults(taskId, types, maxWaitMs = 300000) {
+  const startTime = Date.now();
+  const intervalMs = 2000; // Poll every 2 seconds
+
+  return new Promise((resolve, reject) => {
+    const pollInterval = setInterval(async () => {
+      if (wsAbort) {
+        clearInterval(pollInterval);
+        resolve(); // Don't reject, just stop
+        return;
+      }
+
+      // Timeout check
+      if (Date.now() - startTime > maxWaitMs) {
+        clearInterval(pollInterval);
+        for (const type of types) {
+          const timerEl = document.getElementById(`timer-${type}`);
+          if (timerEl && document.getElementById(`load-${type}`).style.display !== 'none') {
+            document.getElementById(`load-${type}`).style.display = 'none';
+            document.getElementById(`err-${type}`).style.display = 'block';
+            document.getElementById(`errmsg-${type}`).textContent = '等待超时（5分钟）';
+          }
+        }
+        resolve();
+        return;
+      }
+
+      try {
+        const res = await fetch(`/api/status/${taskId}`);
+        const data = await res.json();
+
+        // Update progress display
+        for (const type of types) {
+          const timerEl = document.getElementById(`timer-${type}`);
+          if (!timerEl || document.getElementById(`img-${type}`).style.display === 'block') continue;
+
+          if (data.agentStatus === 'processing') {
+            timerEl.textContent = `🎨 AI 正在创作 ${typeNames[type] || type}... (${data.doneTypes||0}/${data.totalTypes||types.length})`;
+          } else if (data.status === 'completed' && data.results && data.results[type]) {
+            // Show completed image
+            document.getElementById(`load-${type}`).style.display = 'none';
+            const imgEl = document.getElementById(`img-${type}`);
+            imgEl.src = data.results[type];
+            imgEl.style.display = 'block';
+            console.log(`✅ [${type}] Image ready`);
+          } else {
+            timerEl.textContent = `⏳ ${data.message || '处理中...'} (${data.doneTypes||0}/${data.totalTypes||types.length})`;
+          }
+        }
+
+        // Check if ALL done or failed
+        if (data.status === 'completed') {
+          clearInterval(pollInterval);
+          resolve();
+        } else if (data.status === 'failed') {
+          clearInterval(pollInterval);
+          for (const type of types) {
+            if (document.getElementById(`img-${type}`).style.display !== 'block') {
+              document.getElementById(`load-${type}`).style.display = 'none';
+              document.getElementById(`err-${type}`).style.display = 'block';
+              document.getElementById(`errmsg-${type}`).textContent = data.error || '生成失败';
+            }
+          }
+          resolve();
+        }
+
+      } catch (pollErr) {
+        console.warn('Poll error:', pollErr);
+      }
+    }, intervalMs);
+  });
+}
+
+// ========== IMAGEGEN ENGINE MODE (Pollinations.ai Direct - Experimental) ==========
+const TYPE_PROMPTS = {
+  'whitebg': (name, desc, ref) =>
+    `Professional e-commerce white background product photo of ${desc || name}${ref ? ', ' + ref : ''}. Pure white #FFFFFF background, studio softbox lighting from 45 degrees, sharp focus, center-framed, commercial catalog quality, photorealistic 4K, no text watermark logo`,
+  'model': (name, desc, ref) =>
+    `High-end fashion e-commerce photo of a handsome young Asian male model wearing ${desc || name}${ref ? ', ' + ref : ''}. Full body standing pose, clean neutral light-gray background, professional studio soft lighting, premium commercial catalog style, photorealistic 4K, no text watermark`,
+  'scene': (name, desc, ref) =>
+    `Beautiful lifestyle fashion photography of a young Asian man wearing ${desc || name}${ref ? ', ' + ref : ''} in cozy modern interior with warm ambient lighting, natural sunlight through large windows, shallow depth of field, editorial composition, photorealistic 4K, no text watermark`,
+  'infographic': (name, desc, ref) =>
+    `Clean minimalist product showcase banner of ${desc || name}${ref ? ', ' + ref : ''}. Modern flat-lay on pure white background, subtle shadow, premium e-commerce thumbnail style, soft even lighting, photorealistic 4K, no text overlay`,
+  'sizechart': (name, desc, ref) =>
+    `Professional size chart infographic for ${desc || name}${ref ? ', ' + ref : ''}. Clean layout on white background with measurements in elegant typography, fashion e-commerce style, vector-clean 4K quality`,
+  'detail': (name, desc, ref) =>
+    `E-commerce detail page hero image featuring ${desc || name}${ref ? ', ' + ref : ''}. Rich lifestyle scene with model interaction, warm golden hour lighting, emotional storytelling, ultra-premium brand aesthetic, photorealistic 4K magazine quality`,
+  'collocation': (name, desc, ref) =>
+    `Stylish fashion outfit comparison for ${desc || name}${ref ? ', ' + ref : ''}. Two models wearing coordinated outfits with the product, clean minimal studio background, professional editorial photography 4K, no text watermark`
+};
+
+function buildPollinationsUrl(prompt) {
+  const encoded = encodeURIComponent(prompt);
+  const seed = Math.floor(Math.random() * 999999);
+  return `https://image.pollinations.ai/prompt/${encoded}?width=1024&height=1024&seed=${seed}&model=flux&nologo=true`;
+}
+
+async function startImageGenGen(name, types) {
+  wsGenerating = true;
+  wsAbort = false;
+
+  const selling = document.getElementById('wsSelling').value.trim();
+  const refDescription = document.getElementById('refDescription').value.trim();
+  const resultArea = document.getElementById('wsResultArea');
+
+  resultArea.innerHTML = `<div class="result-grid" id="wsResultGrid" style="grid-template-columns:repeat(${Math.min(types.length,3)},1fr);gap:14px"></div>`;
+  const grid = document.getElementById('wsResultGrid');
+
+  const typeNames = {'whitebg':'白底主图','model':'模特展示','scene':'场景图','infographic':'卖点图','sizechart':'尺寸图','detail':'详情页','collocation':'搭配对比图'};
+
+  for (const type of types) {
+    const cell = document.createElement('div');
+    cell.className = 'result-thumb';
+    cell.id = `wsCell-${type}`;
+    cell.innerHTML = `
+      <div class="cell-loading" id="load-${type}">
+        <div class="spinner"></div>
+        <div style="font-size:12px;font-weight:600;margin-top:8px;color:rgba(255,255,255,0.7)">${typeNames[type]}</div>
+        <div style="font-size:10px;color:rgba(0,210,255,0.6);margin-top:4px" id="timer-${type}">🎨 AI 正在创作...</div>
+      </div>
+      <img id="img-${type}" style="display:none;width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:10px;cursor:pointer" onclick="downloadImg(this.src,'${typeNames[type]}')">
+      <div class="cell-error" id="err-${type}" style="display:none;text-align:center;padding:20px">
+        <div style="font-size:28px">⚠️</div>
+        <div style="font-size:12px;color:#e74c3c;margin-top:6px">生成失败</div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-top:4px" id="errmsg-${type}"></div>
+      </div>`;
+    grid.appendChild(cell);
+  }
+
+  // Generate each image sequentially via Pollinations.ai with auto-fallback to Puter.js
+  let pollinationsFailures = 0;
+
+  for (let i = 0; i < types.length; i++) {
+    if (wsAbort) { updateCellStatus(types[i], 'cancelled', '已取消'); continue; }
+
+    const type = types[i];
+    const promptFn = TYPE_PROMPTS[type] || TYPE_PROMPTS['whitebg'];
+    const prompt = promptFn(name, selling, refDescription);
+    const imgUrl = buildPollinationsUrl(prompt);
+    const startTime = Date.now();
+    const timerEl = document.getElementById(`timer-${type}`);
+
+    try {
+      timerEl.textContent = '🎨 正在连接 Pollinations.ai...';
+
+      // Pre-load the image to verify it works
+      const imgResult = await new Promise((resolve, reject) => {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = () => resolve(img);
+        img.onerror = () => reject(new Error('图片加载失败（可能返回402付费墙）'));
+        img.src = imgUrl;
+        // Timeout after 30s (fail fast for 402)
+        setTimeout(() => reject(new Error('生成超时或服务不可用')), 30000);
+      });
+
+      const elapsed = Math.floor((Date.now() - startTime) / 1000);
+
+      document.getElementById(`load-${type}`).style.display = 'none';
+      const displayImg = document.getElementById(`img-${type}`);
+      displayImg.src = imgResult.src;
+      displayImg.style.display = 'block';
+
+      console.log(`✅ [${type}] Pollinations generated in ${elapsed}s`);
+
+    } catch (err) {
+      pollinationsFailures++;
+      const elapsed = Math.floor((Date.now() - startTime) / 1000);
+      console.error(`❌ [${type}] Pollinations failed (${elapsed}s):`, err.message);
+
+      // Auto-fallback: retry with Puter.js for this specific image
+      if (puterReady && !wsAbort) {
+        try {
+          timerEl.textContent = '🔄 Pollinations失败，切换Puter.js重试...';
+          const cfg = modelConfig[selectedModel] || modelConfig['gpt-1'];
+          const puterPrompt = buildWsPrompt(type, name, selling, refDescription);
+
+          const genPromise = puter.ai.txt2img(puterPrompt, { provider: cfg.provider, model: cfg.model });
+          const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('Puter超时（60秒）')), 60000));
+          const result = await Promise.race([genPromise, timeoutPromise]);
+
+          let pImgUrl = '';
+          if (result instanceof HTMLImageElement) pImgUrl = result.src;
+          else if (typeof result === 'string') pImgUrl = result;
+          else if (result && result.src) pImgUrl = result.src;
+
+          if (pImgUrl) {
+            document.getElementById(`load-${type}`).style.display = 'none';
+            const imgEl = document.getElementById(`img-${type}`);
+            imgEl.src = pImgUrl;
+            imgEl.style.display = 'block';
+            console.log(`✅ [${type}] Puter.js fallback succeeded`);
+            continue;
+          }
+          throw new Error('Puter.js 返回空结果');
+        } catch (puterErr) {
+          console.error(`❌ [${type}] Puter.js fallback also failed:`, puterErr.message);
+        }
+      }
+
+      // Both engines failed
+      document.getElementById(`load-${type}`).style.display = 'none';
+      document.getElementById(`err-${type}`).style.display = 'block';
+      document.getElementById(`errmsg-${type}`).textContent = err.message + ` (${elapsed}s)`;
+    }
+  }
+
+  // If ALL images failed via Pollinations, signal to caller
+  if (pollinationsFailures === types.length && types.length > 0) {
+    throw new Error(`Pollinations.ai 全部失败 (${pollinationsFailures}/${types.length})，需要切换引擎`);
+  }
+
+  wsGenerating = false;
+  document.getElementById('wsGenBtn').style.display = 'block';
+  document.getElementById('wsStopBtn').style.display = 'none';
+  if (document.getElementById('wsGenFullBtn')) document.getElementById('wsGenFullBtn').style.display = 'block';
+}
+
+// ========== PUTER.JS ENGINE MODE (Fallback) ==========
+async function startPuterGen(name, types) {
+  if (!puterReady) {
+    alert('Puter.js 尚未就绪，请稍等或切换到「AI 智能引擎」');
+    return;
+  }
+
+  wsGenerating = true;
+  wsAbort = false;
+  const selling = document.getElementById('wsSelling').value.trim();
+  const resultArea = document.getElementById('wsResultArea');
+  const cfg = modelConfig[selectedModel] || modelConfig['gpt-1'];
+
+  // Show result grid
+  resultArea.innerHTML = `<div class="result-grid" id="wsResultGrid" style="grid-template-columns:repeat(${Math.min(types.length,3)},1fr);gap:14px"></div>`;
+  const grid = document.getElementById('wsResultGrid');
+
+  const typeNames = {'whitebg':'白底主图','model':'模特展示','scene':'场景图','infographic':'卖点图','sizechart':'尺寸图','detail':'详情页','collocation':'搭配对比图'};
+
+  // Create cells
+  for (const type of types) {
+    const cell = document.createElement('div');
+    cell.className = 'result-thumb';
+    cell.id = `wsCell-${type}`;
+    cell.innerHTML = `
+      <div class="cell-loading" id="load-${type}">
+        <div class="spinner"></div>
+        <div style="font-size:12px;font-weight:600;margin-top:8px;color:rgba(255,255,255,0.7)">${typeNames[type]}</div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-top:4px" id="timer-${type}">准备 ${cfg.label}...</div>
+      </div>
+      <img id="img-${type}" style="display:none;width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:10px;cursor:pointer" onclick="downloadImg(this.src,'${typeNames[type]}')">
+      <div class="cell-error" id="err-${type}" style="display:none;text-align:center;padding:20px">
+        <div style="font-size:28px">⚠️</div>
+        <div style="font-size:12px;color:#e74c3c;margin-top:6px">生成失败</div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-top:4px" id="errmsg-${type}"></div>
+      </div>`;
+    grid.appendChild(cell);
+  }
+
+  // Generate each image sequentially via Puter.js
+  for (let i = 0; i < types.length; i++) {
+    if (wsAbort) { updateCellStatus(types[i], 'cancelled', '已取消'); continue; }
+
+    const type = types[i];
+    const prompt = buildWsPrompt(type, name, selling);
+    const timerEl = document.getElementById(`timer-${type}`);
+    const startTime = Date.now();
+
+    const timerInterval = setInterval(() => {
+      if (document.getElementById(`timer-${type}`)) {
+        const elapsed = Math.floor((Date.now() - startTime) / 1000);
+        document.getElementById(`timer-${type}`).textContent = `AI 创作中 ${elapsed}s`;
+      }
+    }, 1000);
+
+    try {
+      timerEl.textContent = '调用 ' + cfg.label + '...';
+      const genPromise = puter.ai.txt2img(prompt, { provider: cfg.provider, model: cfg.model });
+      const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('生成超时（60秒）')), 60000));
+      const result = await Promise.race([genPromise, timeoutPromise]);
+      clearInterval(timerInterval);
+
+      let imgUrl = '';
+      if (result instanceof HTMLImageElement) imgUrl = result.src;
+      else if (typeof result === 'string') imgUrl = result;
+      else if (result && result.src) imgUrl = result.src;
+      else throw new Error('返回结果类型未知');
+
+      if (!imgUrl) throw new Error('无法解析图片结果');
+
+      const elapsed = Math.floor((Date.now() - startTime) / 1000);
+      document.getElementById(`load-${type}`).style.display = 'none';
+      const imgEl = document.getElementById(`img-${type}`);
+      imgEl.src = imgUrl;
+      imgEl.style.display = 'block';
+
+      // ✅ Auto-upload to server (non-blocking, Base64)
+      try {
+        const blob = await fetch(imgUrl).then(r => r.blob());
+        const base64 = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(blob);
+        });
+        const upRes = await fetch('/api/upload-result', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ image: base64, productName: name, type: type })
+        });
+        const upData = await upRes.json();
+        if (upData.success) {
+          console.log(`✅ [${type}] Auto-uploaded: ${upData.filepath}`);
+        }
+      } catch (upErr) {
+        console.warn(`⚠️ [${type}] Auto-upload failed (non-critical):`, upErr.message);
+      }
+
+    } catch (err) {
+      clearInterval(timerInterval);
+      const elapsed = Math.floor((Date.now() - startTime) / 1000);
+      document.getElementById(`load-${type}`).style.display = 'none';
+      document.getElementById(`err-${type}`).style.display = 'block';
+      document.getElementById(`errmsg-${type}`).textContent = cfg.label + ': ' + (err.message || '未知错误').substring(0, 60) + ` (${elapsed}s)`;
+    }
+  }
+
+  wsGenerating = false;
+}
+
+function buildWsPrompt(type, name, selling, refDescription) {
+  const desc = selling ? ', ' + selling : '';
+  const ref = refDescription ? ' Similar style to reference: ' + refDescription + '.' : '';
+  const prompts = {
+    'whitebg': `Professional e-commerce product photography of "${name}"${desc}${ref}. Pure white background (#FFFFFF), studio softbox lighting from 45 degrees, sharp focus on the product, center-framed composition, commercial catalog quality, photorealistic, 4K resolution, no text no watermark no logo, clean minimal aesthetic.`,
+    'model': `High-end fashion e-commerce photo of a handsome young Asian male model wearing "${name}"${desc}${ref}. Full body standing pose, clean neutral light-gray background, professional studio soft lighting, premium commercial catalog style, photorealistic skin texture, sharp details, 4K quality, no text no watermark.`,
+    'scene': `Beautiful lifestyle product photography of "${name}"${desc}${ref} in a cozy modern interior setting with warm ambient lighting, natural sunlight through large windows, shallow depth of field, editorial composition, photorealistic, 4K, commercial quality, no text no watermark.`,
+    'infographic': `Clean minimalist product showcase banner of "${name}"${desc}${ref}. Modern flat-lay arrangement on pure white background, subtle shadow beneath, premium e-commerce thumbnail style, soft even lighting, photorealistic, 4K, no text overlay no watermark.`,
+    'sizechart': `Professional size chart infographic for "${name}"${desc}${ref}. Clean layout on white background, measurement lines and annotations in elegant typography, fashion e-commerce style, vector-clean appearance, 4K quality.`,
+    'detail': `E-commerce detail page hero image featuring "${name}"${desc}${ref}. Rich lifestyle scene with model interaction, warm golden hour lighting, emotional storytelling composition, ultra-premium brand aesthetic, photorealistic, 4K, magazine editorial quality.`,
+    'collocation': `Stylish fashion colocation and outfit comparison display for "${name}"${desc}${ref}. Two or three models wearing coordinated outfits, clean minimal studio background, professional editorial photography style, sharp focus on clothing details and styling coordination, 4K quality, no text no watermark.`
+  };
+  return prompts[type] || prompts['model'];
+}
+
+// ========== PUTER.JS ENGINE MODE (Fallback) ==========
+async function startPuterGen(name, types) {
+  if (!puterReady) {
+    alert('Puter.js 尚未就绪，请稍等或切换到「AI 智能引擎」');
+    return;
+  }
+
+  wsGenerating = true;
+  wsAbort = false;
+  const selling = document.getElementById('wsSelling').value.trim();
+  const resultArea = document.getElementById('wsResultArea');
+  const cfg = modelConfig[selectedModel] || modelConfig['gpt-1'];
+
+  // Show result grid
+  resultArea.innerHTML = `<div class="result-grid" id="wsResultGrid" style="grid-template-columns:repeat(${Math.min(types.length,3)},1fr);gap:14px"></div>`;
+  const grid = document.getElementById('wsResultGrid');
+
+  const typeNames = {'whitebg':'白底主图','model':'模特展示','scene':'场景图','infographic':'卖点图','sizechart':'尺寸图','detail':'详情页','collocation':'搭配对比图'};
+
+  // Create cells
+  for (const type of types) {
+    const cell = document.createElement('div');
+    cell.className = 'result-thumb';
+    cell.id = `wsCell-${type}`;
+    cell.innerHTML = `
+      <div class="cell-loading" id="load-${type}">
+        <div class="spinner"></div>
+        <div style="font-size:12px;font-weight:600;margin-top:8px;color:rgba(255,255,255,0.7)">${typeNames[type]}</div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-top:4px" id="timer-${type}">准备 ${cfg.label}...</div>
+      </div>
+      <img id="img-${type}" style="display:none;width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:10px;cursor:pointer" onclick="downloadImg(this.src,'${typeNames[type]}')">
+      <div class="cell-error" id="err-${type}" style="display:none;text-align:center;padding:20px">
+        <div style="font-size:28px">⚠️</div>
+        <div style="font-size:12px;color:#e74c3c;margin-top:6px">生成失败</div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-top:4px" id="errmsg-${type}"></div>
+      </div>`;
+    grid.appendChild(cell);
+    cellMap[type] = cell;
+  }
+
+  // Generate each image sequentially
+  for (let i = 0; i < types.length; i++) {
+    if (wsAbort) {
+      updateCellStatus(types[i], 'cancelled', '已取消');
+      continue;
+    }
+
+    const type = types[i];
+    const prompt = buildWsPrompt(type, name, selling);
+    const timerEl = document.getElementById(`timer-${type}`);
+    const startTime = Date.now();
+
+    // Update timer every second
+    const timerInterval = setInterval(() => {
+      if (document.getElementById(`timer-${type}`)) {
+        const elapsed = Math.floor((Date.now() - startTime) / 1000);
+        document.getElementById(`timer-${type}`).textContent = `AI 创作中 ${elapsed}s`;
+      }
+    }, 1000);
+
+    try {
+      timerEl.textContent = '调用 ' + cfg.label + '...';
+      console.log(`[${type}] Calling Puter.js → provider:${cfg.provider} model:${cfg.model}`);
+
+      // Call Puter.js txt2img with 60s timeout
+      const genPromise = puter.ai.txt2img(prompt, {
+        provider: cfg.provider,
+        model: cfg.model
+      });
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('生成超时（60秒），请换更快的模型或检查网络')), 60000)
+      );
+      const result = await Promise.race([genPromise, timeoutPromise]);
+      clearInterval(timerInterval);
+
+      // Puter.js returns HTMLImageElement with src as data URL or image URL
+      let imgUrl = '';
+      if (result instanceof HTMLImageElement) {
+        imgUrl = result.src;
+      } else if (typeof result === 'string') {
+        imgUrl = result;
+      } else if (result && result.src) {
+        imgUrl = result.src;
+      } else {
+        console.log('Unexpected result type:', typeof result, result);
+        throw new Error('返回结果类型未知');
+      }
+
+      if (!imgUrl) throw new Error('无法解析图片结果');
+
+      // Show image
+      const elapsed = Math.floor((Date.now() - startTime) / 1000);
+      document.getElementById(`load-${type}`).style.display = 'none';
+      const imgEl = document.getElementById(`img-${type}`);
+      imgEl.src = imgUrl;
+      imgEl.style.display = 'block';
+      console.log(`✅ [${type}] Generated in ${elapsed}s`);
+
+    } catch (err) {
+      clearInterval(timerInterval);
+      const elapsed = Math.floor((Date.now() - startTime) / 1000);
+      document.getElementById(`load-${type}`).style.display = 'none';
+      const errEl = document.getElementById(`err-${type}`);
+      errEl.style.display = 'block';
+      const errMsg = err.message || '未知错误';
+      document.getElementById(`errmsg-${type}`).textContent = cfg.label + ': ' + errMsg.substring(0, 60) + ` (${elapsed}s)`;
+      console.error(`❌ [${type}] Error with ${cfg.label}:`, errMsg);
+    }
+  }
+
+  // Done
+  wsGenerating = false;
+  document.getElementById('wsGenBtn').style.display = 'block';
+  document.getElementById('wsStopBtn').style.display = 'none';
+}
+
+function stopWorkspaceGen() {
+  wsAbort = true;
+  if (pollInterval) { clearInterval(pollInterval); pollInterval = null; }
+  const btn = document.getElementById('wsStopBtn');
+  if (btn) btn.textContent = '正在停止...';
+  setTimeout(() => {
+    if (btn) btn.textContent = '⏹ 停止生成';
+    wsGenerating = false;
+  }, 1000);
+}
+
+function downloadImg(url, name) {
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = (name || 'image') + '_' + Date.now() + '.png';
+  a.target = '_blank';
+  a.click();
+}
+
+function updateCellStatus(type, status, text) {
+  const timerEl = document.getElementById(`timer-${type}`);
+  if (timerEl) timerEl.textContent = text;
+}
+
+// ===== Paste support in workspace =====
+document.addEventListener('paste', e => {
+  const items = e.clipboardData?.items;
+  if (!items) return;
+  for (const item of items) {
+    if (item.type.startsWith('image/')) { handleWsFile(item.getAsFile()); break; }
+  }
+});
+
+// ✅ 新增：查询余额
+async function checkBalance() {
+  const balanceDisplay = document.getElementById('balanceDisplay');
+  balanceDisplay.innerHTML = '<span style="color:rgba(0,210,255,0.6)">⏳ 查询中...</span>';
+
+  try {
+    const res = await fetch('/api/balance');
+    const data = await res.json();
+
+    if (data.success) {
+      const balance = parseFloat(data.balance);
+      let color = '#27ae60'; // 绿色：余额充足
+      if (balance < 0.1) color = '#e74c3c'; // 红色：余额不足
+      else if (balance < 0.5) color = '#f39c12'; // 橙色：余额偏低
+
+      balanceDisplay.innerHTML = `<span style="color:${color};font-weight:700;font-size:16px">¥${balance.toFixed(4)}</span> <span style="font-size:10px;color:rgba(255,255,255,0.4)">元</span>`;
+    } else {
+      balanceDisplay.innerHTML = '<span style="color:#e74c3c">查询失败：' + (data.error || '未知错误') + '</span>';
+    }
+  } catch (err) {
+    balanceDisplay.innerHTML = '<span style="color:#e74c3c">查询失败：' + err.message + '</span>';
+  }
+}
+
+// ✅ 新增：切换免费/付费模型
+async function switchModelType(usePaid) {
+  try {
+    const res = await fetch('/api/toggle-paid-model', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ usePaidModel: usePaid })
+    });
+    const data = await res.json();
+
+    if (data.success) {
+      // 更新按钮样式
+      const freeBtn = document.getElementById('freeModelBtn');
+      const paidBtn = document.getElementById('paidModelBtn');
+      const hint = document.getElementById('modelTypeHint');
+
+      if (usePaid) {
+        freeBtn.style.background = 'transparent';
+        freeBtn.style.color = 'rgba(255,255,255,0.5)';
+        freeBtn.style.borderColor = 'rgba(255,255,255,0.15)';
+        paidBtn.style.background = 'rgba(39,174,96,0.15)';
+        paidBtn.style.color = '#27ae60';
+        paidBtn.style.borderColor = 'rgba(39,174,96,0.4)';
+        hint.innerHTML = '当前使用：<span style="color:#27ae60">付费模型（Z-Image-Turbo）- 效果最好，适合白底产品图</span>';
+      } else {
+        paidBtn.style.background = 'transparent';
+        paidBtn.style.color = 'rgba(255,255,255,0.5)';
+        paidBtn.style.borderColor = 'rgba(255,255,255,0.15)';
+        freeBtn.style.background = 'rgba(39,174,96,0.15)';
+        freeBtn.style.color = '#27ae60';
+        freeBtn.style.borderColor = 'rgba(39,174,96,0.4)';
+        hint.innerHTML = '当前使用：<span style="color:#27ae60">免费模型（Kolors）- 适合模特展示图</span>';
+      }
+
+      console.log('✅ Model type switched to:', usePaid ? 'PAID (Z-Image-Turbo)' : 'FREE (Kolors)');
+    } else {
+      alert('切换失败：' + (data.error || '未知错误'));
+    }
+  } catch (err) {
+    alert('切换失败：' + err.message);
+  }
+}
+
+// ===== Initialize =====
+console.log('AI DesignKit v14 loaded! SiliconFlow balance + paid model support.');
+setTimeout(() => {
+  // 自动查询余额
+  checkBalance();
+}, 1000);
+</script>
+</body>
+</html>
