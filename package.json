@@ -1,0 +1,12 @@
+{
+  "name": "designkit-ai",
+  "version": "1.0.0",
+  "description": "AI DesignKit - E-commerce AI Image Generation Tool",
+  "main": "index.html",
+  "scripts": {
+    "start": "echo 'This is a static site. Use a local server or deploy to Cloudflare Pages.'"
+  },
+  "keywords": ["ai", "design", "ecommerce", "image-generation"],
+  "author": "DesignKit Team",
+  "license": "MIT"
+}
